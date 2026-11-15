@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Plus+Jakarta+Sans:wght@500;600;700&display=swap" rel="stylesheet">
+<title>Tamparan Keuangan</title>
+<style>
+:root{
+  --card:#1c1c1d; --edge:#343436; --fg:#ffffff; --label:#98989e; --btn:#4a4a4d; --chip:#161617;
+  --serif:"Fraunces",Georgia,"Times New Roman",serif;
+  --sans:"Plus Jakarta Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  color-scheme:dark; box-sizing:border-box; padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+html{scroll-padding-top:env(safe-area-inset-top,0px);min-height:100vh}
+*{box-sizing:border-box}
+body{min-height:100vh;margin:0;background:transparent;color:var(--fg);font-family:var(--sans);-webkit-font-smoothing:antialiased;padding:30px 24px 44px}
+.wrap{max-width:920px;margin:0 auto;padding:0 60px}
+.scene{perspective:1100px;perspective-origin:50% 35%}
+.rig{position:relative;display:flex;align-items:stretch;gap:20px;transform-style:preserve-3d;will-change:transform;transform:rotateX(-14deg)}
+.card{position:relative;flex:1;min-width:0;background:var(--card);transform-style:preserve-3d;will-change:transform;border:1px solid var(--edge);border-radius:22px;padding:30px;box-shadow:calc(var(--sx,0)*1px) calc(26px + var(--sy,0)*1px) 46px -20px #000,0 0 70px -18px #ffffff1c,inset 0 1px 0 #ffffff0a}
+.card::before{content:"";position:absolute;top:-1px;left:28%;width:44%;height:1px;background:linear-gradient(90deg,transparent,#ffffffb0,transparent)}
+.card::after{content:"";position:absolute;inset:0;border-radius:22px;background:#131314;border:1px solid #262628;transform:translateZ(-14px)}
+.glare{position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:radial-gradient(260px circle at var(--gx,50%) var(--gy,0%),#ffffff17,transparent 70%);transform:translateZ(1px)}
+.quote,.panel{transform:none}
+.bar{transform:none}
+.bot{transform:none}
+.quote{font-family:var(--serif);font-weight:700;font-size:20px;line-height:1.2;letter-spacing:-.01em;margin:0;height:58px;overflow:hidden;text-align:center;transition:opacity .35s}
+.quote.out{opacity:0}
+.bar{height:3px;background:#141415;border-radius:99px;overflow:hidden;margin:8px 0 8px}
+.bar span{display:block;height:100%;width:0;background:#fff;border-radius:99px}
+.bot{display:flex;justify-content:space-between;align-items:center;gap:12px;font-size:10.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--label)}
+.bot .note{flex:1}
+.btns{position:absolute;left:100%;top:0;bottom:0;margin-left:14px;display:flex;flex-direction:column;justify-content:space-between;align-items:center;gap:8px;transform:translateZ(34px) translateX(-8px);opacity:0;pointer-events:none;transition:opacity .25s,transform .25s}
+html.near .btns,.btns:hover,.btns:has(:focus-visible){opacity:1;pointer-events:auto;transform:translateZ(34px) translateX(0)}
+@media (hover:none){.btns{opacity:1;pointer-events:auto;transform:translateZ(34px)}}
+button{width:34px;height:34px;border:0;border-radius:50%;background:var(--btn);color:#fff;cursor:pointer;display:grid;place-items:center;transition:transform .15s,background .2s,box-shadow .15s;box-shadow:0 4px 0 #131315,0 10px 14px -6px #000}
+button:hover{background:#5b5b5f}
+button:active{transform:translateY(3px);box-shadow:0 1px 0 #131315,0 3px 6px -3px #000}
+button:focus-visible{outline:2px solid #fff;outline-offset:2px}
+button svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.panel{margin:2px 0 6px}
+.panel[hidden]{display:none}
+textarea,#inp2{width:100%;resize:none;background:var(--chip);color:#fff;border:1px solid var(--edge);border-radius:12px;padding:10px 12px;font:600 14px/1.4 var(--serif)}
+#inp2{margin-top:8px;font:600 12px var(--sans)}
+textarea:focus-visible,#inp2:focus-visible{outline:2px solid #fff;outline-offset:1px}
+.row{display:flex;justify-content:space-between;align-items:center;margin:8px 0}
+.hint{font-size:11px;color:var(--label);font-weight:600}
+button.txt{width:auto;height:32px;padding:0 16px;border-radius:16px;font:700 12px var(--sans);background:#fff;color:#111;box-shadow:0 4px 0 #b4b4ba,0 10px 14px -6px #000}
+button.txt:hover{background:#e6e6e8}
+button.txt:active{box-shadow:0 1px 0 #b4b4ba}
+#list{list-style:none;margin:0;padding:0;max-height:120px;overflow-y:auto}
+#list li{display:flex;justify-content:space-between;gap:10px;align-items:center;font:600 13px/1.35 var(--serif);color:#d8d8dc;padding:7px 0;border-top:1px solid var(--edge)}
+#list button{width:24px;height:24px;flex:none;font-size:14px;box-shadow:none}
+@media (prefers-reduced-motion:reduce){.quote,button,.btns{transition:none}}
+@media (max-width:520px){.card{padding:26px 18px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="scene" id="scene">
+<div class="rig" id="rig">
+<main class="card" id="card">
+  <div class="glare"></div>
+  <section class="panel" id="panel" hidden>
+    <textarea id="inp" rows="2" maxlength="160" placeholder="Tulis kata-kata untuk dirimu sendiri"></textarea>
+    <input id="inp2" maxlength="70" placeholder="Tulisan kecil di bawah (opsional)">
+    <div class="row">
+      <span class="hint" id="hint">Maks. 160 karakter</span>
+      <button class="txt" id="add">Tambah</button>
+    </div>
+  </section>
+  <section class="panel" id="lpanel" hidden>
+    <ul id="list"></ul>
+    <div class="row">
+      <span class="hint" id="cnt"></span>
+      <button class="txt" id="reset">Pulihkan bawaan</button>
+    </div>
+  </section>
+  <p class="quote" id="q"></p>
+  <span id="note" hidden></span>
+</main>
+<div class="btns">
+  <button id="lst" title="Daftar kata-kata" aria-label="Daftar kata-kata"><svg viewBox="0 0 24 24"><path d="M8 6h13M8 12h13M8 18h13M3.5 6h.01M3.5 12h.01M3.5 18h.01"/></svg></button>
+  <button id="edit" title="Tulis kata-kata sendiri" aria-label="Tulis kata-kata sendiri"><svg viewBox="0 0 24 24"><path d="M12 20h9M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg></button>
+  <button id="next" title="Berikutnya" aria-label="Kutipan berikutnya"><svg viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg></button>
+</div>
+</div>
+</div>
+</div>
+<script>
+const Q=[
+["Boros","Kopi Rp35.000 tiap hari itu bukan “cuma kopi”. Itu Rp12 juta setahun yang kamu minum.","Hitung dulu sebelum checkout."],
+["Boros","Kamu bilang belum punya uang buat nabung, tapi selalu punya buat jajan.","Nabung itu prioritas, bukan sisa."],
+["Gaya hidup","Gaji naik, gaya hidup ikut naik. Lalu kamu heran kenapa saldo tetap segitu.","Jangan naikkan gaya hidup tiap naik gaji."],
+["Dana darurat","Kalau besok kehilangan penghasilan, berapa bulan kamu bisa bertahan?","Targetkan dana darurat 3–6 bulan."],
+["Utang","Cicilan 0% itu tetap utang. Barangnya jadi punyamu, uangnya sudah bukan.","Beli yang dibutuhkan, bukan yang dicicil."],
+["Impulsif","Diskon 70% dari barang yang tidak kamu butuhkan tetap 100% pemborosan.","Tunggu 24 jam sebelum beli."],
+["Catatan","Uang yang tidak dicatat akan menghilang tanpa kamu sadari.","Catat setiap pengeluaran, sekecil apa pun."],
+["Nabung","Menabung sisa belanja itu mitos. Sisa belanja nyaris selalu nol.","Sisihkan di awal bulan, bukan di akhir."],
+["Prioritas","Kamu tidak miskin. Kamu cuma belum tahu uangmu pergi ke mana.","Cek dashboard pengeluaranmu sekarang."],
+["Tujuan","Uang yang kamu habiskan hari ini adalah masa depan yang kamu gadaikan.","Tentukan tujuan finansial yang jelas."],
+["Gengsi","Sibuk terlihat mampu, sampai lupa menjadi benar-benar mampu.","Beli untuk dirimu, bukan untuk feed."],
+["Kebiasaan","Pengeluaran kecil yang diulang-ulang adalah kebocoran terbesar dompetmu.","Audit langganan dan jajan rutinmu."]
+];
+const DUR=12000;
+let i=Math.floor(Math.random()*Q.length), t0=0, raf;
+const $=id=>document.getElementById(id);
+function show(n){
+  if(!Q.length){$("q").textContent="Belum ada kata-kata. Tambah lewat ikon pensil.";$("note").textContent="";return}
+  i=(n+Q.length)%Q.length;
+  const q=$("q"); q.classList.add("out");
+  setTimeout(()=>{
+    q.textContent="“"+Q[i][1]+"”";
+    fit(q);
+    $("note").textContent=Q[i][2];
+    q.classList.remove("out");
+  },reduce()?0:300);
+  t0=performance.now();
+}
+function reduce(){return matchMedia("(prefers-reduced-motion: reduce)").matches}
+function fit(q){
+  if(q.offsetParent===null)return;
+  const H=58; q.style.height="auto"; q.style.paddingTop="0px";
+  let s=28;
+  for(;s>=12;s--){q.style.fontSize=s+"px";if(q.offsetHeight<=H)break}
+  const h=q.offsetHeight; q.style.height=H+"px"; q.style.paddingTop=Math.max(0,(H-h)/2)+"px";
+}
+function tick(now){
+  if(editing)t0=now;
+  const p=Math.min((now-t0)/DUR,1);
+  if(p>=1) show(i+1);
+  raf=requestAnimationFrame(tick);
+}
+let editing=false, C=[], H=[], mode="";
+function load(k){try{const v=JSON.parse(localStorage.getItem(k)||"[]");return Array.isArray(v)?v:[]}catch(e){return[]}}
+C=load("tamparan-custom"); H=load("tamparan-hidden");
+for(let k=Q.length-1;k>=0;k--) if(H.includes(Q[k][1])) Q.splice(k,1);
+C=C.map(c=>typeof c==="string"?{t:c,n:""}:c).filter(c=>c&&c.t);
+C.forEach(c=>Q.push(["Dari kamu",c.t,c.n||"Tulisan kamu sendiri.",1]));
+function save(){try{localStorage.setItem("tamparan-custom",JSON.stringify(C));localStorage.setItem("tamparan-hidden",JSON.stringify(H))}catch(e){$("hint").textContent="Tidak bisa menyimpan di embed ini."}}
+function removeItem(it){
+  const k=Q.indexOf(it); if(k<0)return;
+  Q.splice(k,1);
+  if(it[3]){const c=C.findIndex(x=>x.t===it[1]); if(c>=0)C.splice(c,1)} else H.push(it[1]);
+  save();
+}
+function renderList(){
+  const ul=$("list"); ul.textContent="";
+  $("cnt").textContent=Q.length+" kata-kata";
+  if(!Q.length){const li=document.createElement("li"); li.textContent="Daftar kosong. Tambah lewat ikon pensil."; ul.append(li); return}
+  Q.slice().forEach(it=>{
+    const li=document.createElement("li"), s=document.createElement("span"), b=document.createElement("button");
+    s.textContent=it[1]; b.textContent="\u00d7"; b.setAttribute("aria-label","Hapus");
+    b.onclick=()=>{removeItem(it); if(i>=Q.length)i=0; renderList()};
+    li.append(s,b); ul.append(li);
+  });
+}
+function setMode(m){
+  mode=(mode===m)?"":m; editing=!!mode;
+  $("panel").hidden=mode!=="edit"; $("lpanel").hidden=mode!=="list";
+  $("q").style.display=mode?"none":"";
+  $("edit").setAttribute("aria-pressed",mode==="edit"); $("lst").setAttribute("aria-pressed",mode==="list");
+  if(mode==="edit")$("inp").focus();
+  if(mode==="list")renderList();
+  if(!mode)show(i);
+}
+$("edit").onclick=()=>setMode("edit");
+$("lst").onclick=()=>setMode("list");
+$("reset").onclick=()=>{H=[];save();location.reload()};
+$("add").onclick=()=>{
+  const v=$("inp").value.trim(), n=$("inp2").value.trim();
+  if(!v){$("hint").textContent="Tulis dulu kata-katanya.";return}
+  C.push({t:v,n}); Q.push(["Dari kamu",v,n||"Tulisan kamu sendiri.",1]); save();
+  $("inp").value=""; $("inp2").value=""; $("hint").textContent="Maks. 160 karakter";
+  i=Q.length-1; setMode("edit");
+};
+$("next").onclick=()=>{if(mode)setMode(mode);show(i+1)};
+show(i); raf=requestAnimationFrame(tick);
+
+document.querySelector(".btns").addEventListener("click",e=>{const b=e.target.closest("button");if(b&&e.detail)b.blur()});
+addEventListener("resize",()=>fit($("q")));
+if(document.fonts&&document.fonts.ready)document.fonts.ready.then(()=>fit($("q")));
+/* efek 3D: kartu menjauh dari kursor */
+const scene=$("scene"),card=$("card");
+const calm=matchMedia("(prefers-reduced-motion: reduce)").matches;
+let tx=0,ty=0,cx=0,cy=0,lift=0;
+const cl=(v,m)=>Math.max(-m,Math.min(m,v));
+addEventListener("pointermove",e=>{
+  const r=scene.getBoundingClientRect();
+  const dx=(e.clientX-(r.left+r.width/2))/(r.width/2), dy=(e.clientY-(r.top+r.height/2))/(r.height/2);
+  const inr=Math.abs(dx)<1.5&&Math.abs(dy)<1.4;document.documentElement.classList.toggle("near",inr);if(inr){tx=cl(dx,1);ty=cl(dy,1)}else{tx=0;ty=0}
+});
+document.addEventListener("pointerleave",()=>{tx=0;ty=0;document.documentElement.classList.remove("near")});
+addEventListener("blur",()=>{tx=0;ty=0;document.documentElement.classList.remove("near")});
+function frame(ts){
+  cx+=(tx-cx)*.12; cy+=(ty-cy)*.12;
+  lift+=((document.documentElement.classList.contains("near")?1:0)-lift)*.1;
+  const bx=Math.sin(ts/1600)*1,by=Math.cos(ts/2000)*1.2,near=Math.hypot(cx,cy);
+  $("rig").style.transform=`translate3d(${-cx*8}px,${-cy*6}px,${-near*28}px) rotateX(${-14*(1-lift)+bx-cy*10}deg) rotateY(${cx*8}deg)`;
+  card.style.setProperty("--sx",(-cx*14).toFixed(1));
+  card.style.setProperty("--sy",(-cy*10).toFixed(1));
+  card.style.setProperty("--gx",(50+cx*45).toFixed(1)+"%");
+  card.style.setProperty("--gy",(50+cy*45).toFixed(1)+"%");
+  requestAnimationFrame(frame);
+}
+if(!calm)requestAnimationFrame(frame);
+</script>
+</body>
+</html>
