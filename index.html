@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Plus+Jakarta+Sans:wght@500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700&display=swap" rel="stylesheet">
 <title>Tamparan Keuangan</title>
 <style>
 :root{
@@ -56,6 +56,25 @@ button.txt:active{box-shadow:0 1px 0 #b4b4ba}
 #list button{width:24px;height:24px;flex:none;font-size:14px;box-shadow:none}
 @media (prefers-reduced-motion:reduce){.quote,button,.btns{transition:none}}
 @media (max-width:520px){.card{padding:26px 18px}}
+
+/* liquid glass */
+:root{--card:#26262c;--label:#ffffffb3;--edge:#ffffff33;--chip:#ffffff08;--btn:#ffffff14;--sans:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text","Inter",system-ui,"Segoe UI",Roboto,sans-serif;--serif:var(--sans)}
+.card{background:linear-gradient(145deg,#ffffff0d,#ffffff00 50%,#ffffff06);-webkit-backdrop-filter:blur(2px) saturate(140%);backdrop-filter:blur(2px) saturate(140%);border:1px solid #ffffff26;box-shadow:calc(var(--sx,0)*1px) calc(26px + var(--sy,0)*1px) 46px -22px #000a,inset 0 1.5px 0 #ffffffd0,inset 0 -1.5px 0 #ffffff40,inset 1.5px 0 0 #ffffff66,inset -1.5px 0 0 #ffffff30,inset 0 0 18px 1px #ffffff14}
+.card::after{display:none}
+.glare{background:radial-gradient(260px circle at var(--gx,50%) var(--gy,0%),#ffffff40,transparent 70%)}
+.quote,.bot,.hint{text-shadow:0 1px 8px #0008}
+.bar{background:#ffffff26}
+button{background:#ffffff1f;border:1px solid #ffffff4d;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);box-shadow:inset 0 1.5px 0 #ffffffa0,inset 0 -1px 0 #ffffff2e,inset 0 0 10px #ffffff1a,0 8px 16px -8px #000a;text-shadow:0 1px 6px #0008}
+button:hover{background:#ffffff33}
+button:active{transform:scale(.93);box-shadow:inset 0 1.5px 0 #ffffffa0,inset 0 -1px 0 #ffffff2e,inset 0 0 10px #ffffff1a}
+button.txt{background:#ffffff1f;color:#fff;border-radius:99px;box-shadow:inset 0 1.5px 0 #ffffffa0,inset 0 -1px 0 #ffffff2e,inset 0 0 10px #ffffff1a,0 8px 16px -8px #000a}
+button.txt:hover{background:#ffffff33}
+button.txt:active{box-shadow:inset 0 1.5px 0 #ffffffa0,inset 0 -1px 0 #ffffff2e,inset 0 0 10px #ffffff1a}
+#list button{box-shadow:inset 0 1px 0 #ffffff80}
+textarea,#inp2{-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);box-shadow:inset 0 1px 0 #ffffff26}
+textarea::placeholder,#inp2::placeholder{color:#ffffff80}
+#list li{color:#fff}
+@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){.card{background:#2a2a31ee}}
 </style>
 </head>
 <body>
